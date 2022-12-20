@@ -5,7 +5,7 @@ x = 750
 y = 750
 jump = False
 jc = 10
-li = [(400, 700), (200, 600), (500, 500)]
+li = [(400, 700), (200, 600), (500, 500), (400, 400), (300, 300), (200, 200), (100, 100)]
 pygame.init()
 
 bg = pygame.image.load("Phon.PNG")
@@ -41,8 +41,9 @@ while True:
     for i in li:
         if not jump and i[1] - 110 < y < i[1] - 70 and not (i[0] - 50 <= x <= i[0] + 110):
             print("yeah")
+            print(x, y)
             jump = True
-            jc = -5
+            jc = 0
     if keys[pygame.K_UP] and y >= 50:
         jump = True
     if jump is True:
@@ -50,7 +51,7 @@ while True:
             jump = False
             y = 749
             jc = 10
-        elif jc >= -10:
+        elif jc >= -20:
             if jc < 0:
                 y += (jc ** 2) // 2
             else:
@@ -62,8 +63,9 @@ while True:
                     print(x, y)
                     jump = False
                     jc = 10
-            print(jump)
         else:
+            print(x, y)
+            print(jc)
             jump = False
             jc = 10
     clock.tick(60)
