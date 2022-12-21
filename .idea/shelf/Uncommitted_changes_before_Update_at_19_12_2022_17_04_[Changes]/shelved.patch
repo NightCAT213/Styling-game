@@ -1,0 +1,17 @@
+Index: main.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>def print_hi(name):\r\n    print(f'Hi, {name}')\r\n\r\n\r\nif __name__ == '__main__':\r\n    print_hi('PyCharm')
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/main.py b/main.py
+--- a/main.py	(revision 3be22aa91afebc61209a5764460d43425358c6fb)
++++ b/main.py	(date 1671458637517)
+@@ -3,4 +3,4 @@
+ 
+ 
+ if __name__ == '__main__':
+-    print_hi('PyCharm')
+\ No newline at end of file
++    print_hi('PyCharm')
