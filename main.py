@@ -7,6 +7,7 @@ y = 600
 jump = False
 jc = 10
 li = [[400, 700], [200, 650], [600, 550], [400, 450], [200, 350], [400, 250], [600, 150], [400, 50]]
+pr = 0.5
 pygame.init()
 
 bg = pygame.image.load("Phon.PNG")
@@ -92,6 +93,7 @@ while True:
             jump = False
             jc = 10
     for i in range(len(li)):
-        li[i][1] += 1.5
-    y += 1.5
+        li[i][1] += pr
+    y += pr
+    pr += 0.001
     clock.tick(60)
