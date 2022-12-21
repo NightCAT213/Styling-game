@@ -7,33 +7,50 @@ y = 600
 jump = False
 jc = 10
 li = [[400, 700], [200, 650], [600, 550], [400, 450], [200, 350], [400, 250], [600, 150], [400, 50]]
+li2 = li[:]
 pr = 0.5
+helper = 49
+now_help = 0
 pygame.init()
 
 bg = pygame.image.load("Phon.PNG")
 platform = pygame.image.load("platform.png")
-mask_plat = pygame.mask.from_surface(platform)
 pers = pygame.image.load("pers.png")
-mask_pers = pygame.mask.from_surface(pers)
+butterfly = pygame.image.load("butterfly.png")
 scale = pygame.transform.scale(platform, (150, 30))
-scale2 = pygame.transform.scale(pers, (100, 100))
+scale2 = pygame.transform.scale(pers, (70, 120))
+scale3 = pygame.transform.scale(butterfly, (100, 100))
 sc = pygame.display.set_mode((840, 840))
 clock = pygame.time.Clock()
 pygame.mixer.music.load('music.mp3')
-font = pygame.font.Font(None, 50)
+font = pygame.font.Font(None, 60)
+font2 = pygame.font.Font(None, 50)
 pygame.mixer.music.play(-1)
 
 while True:
     if y > 750:
-        text = font.render("Проигрыш!", True, (100, 255, 100))
-        sc.blit(text, (400, 400))
+        text = font.render("Проигрыш!", True, (255, 50, 50))
+        text2 = font2.render("Чтобы начать заново, нажмите пробел.", True, (255, 50, 50))
+        sc.blit(text, (320, 300))
+        sc.blit(text2, (100, 400))
+        pygame.display.flip()
+        keys = pygame.key.get_pressed()
+        print(keys)
+        if keys[pygame.K_SPACE]:
+            print("nu i huyi")
+            li = li2
+            x, y = 400, 600
         continue
     for i in pygame.event.get():
         if i.type == pygame.QUIT:
             sys.exit()
     sc.blit(bg, [0, 0])
     for i in li:
-        sc.blit(scale, [i[0], i[1]])
+        if len(i) == 2:
+            sc.blit(scale, [i[0], i[1]])
+        else:
+            sc.blit(scale, [i[0], i[1]])
+            sc.blit(scale3, [i[0] + 30, i[1] - 90])
     sc.blit(scale2, [x, y])
     pygame.display.update()
     keys = pygame.key.get_pressed()
@@ -64,7 +81,11 @@ while True:
                 x1 = li[len(li) - 1][0] + 170
             elif x1 > 750:
                 x1 = li[len(li) - 1][0] - 170
-            li.append([x1, y1])
+            if helper >= 50:
+                li.append([x1, y1, 1])
+                helper = 0
+            else:
+                li.append([x1, y1])
     if not kl1 and kl2:
         jump = True
         jc = 0
@@ -87,6 +108,7 @@ while True:
                     print(x, y)
                     jump = False
                     jc = 10
+                    helper += 1
         else:
             print(x, y)
             print(jc)
