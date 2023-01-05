@@ -54,6 +54,7 @@ class Example(QWidget):
         self.pushButton.clicked.connect(self.getfiles)
         self.pushButton_2.clicked.connect(self.translate)
         self.counter = 0
+        self.file = 0
 
     def getfiles(self):
         self.textBrowser.setText('')
@@ -93,6 +94,7 @@ class Example(QWidget):
                     im = QtGui.QPixmap(str(fname[0])[:-4] + '_' + str(self.counter) + ".png")
                     im = im.scaled(271, 521)
                     self.label.setPixmap(im)
+                    self.file = str(fname[0])[:-4] + '_' + str(self.counter) + ".png"
                 else:
                     self.textBrowser.setText('Файл не удовлетворяет форматам игры')
             else:
