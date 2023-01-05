@@ -1,9 +1,9 @@
+
 import sqlite3
 import sys
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QFileDialog
 from PyQt5.QtChart import QChart, QPieSeries, QPieSlice, QChartView
-from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QFileDialog
 from PIL import Image
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -87,7 +87,7 @@ class Example(QWidget):
                         self.textBrowser.setText('Файл не удовлетворяет форматам игры')
                         break
                 if ((len(data) == 3 and v == 1 and n == 1 and ob == 1)
-                    or (len(data) == 2 and ((pl == 1 and ob == 1) or (v == 1 or n == 1 or ob == 1)))
+                        or (len(data) == 2 and ((pl == 1 and ob == 1) or (v == 1 or n == 1 or ob == 1)))
                         or (len(data) == 1)):
                     self.counter += 1
                     img = Image.open('images_game2/doll.png')
@@ -115,7 +115,7 @@ class MyWidget(QMainWindow):
         super().__init__()
         self.initUI()
 
-    def initUI(self):   # создаем главное окно
+    def initUI(self):  # создаем главное окно
         self.setObjectName("MainWindow")
         self.setGeometry(200, 200, 1607, 780)
         self.setStyleSheet("background-color: rgb(255, 202, 224);")
@@ -361,7 +361,8 @@ class MyWidget(QMainWindow):
         self.pushButton_3.setStyleSheet("background-color: #fdaac6;")
         self.pushButton_4.setStyleSheet("background-color: #fdaac6;")
 
-        self.label.setText("<html><head/><body><p><span style=\" font-size:18pt;\">Сортировка</span></p><p><br/></p></body></html>")
+        self.label.setText(
+            "<html><head/><body><p><span style=\" font-size:18pt;\">Сортировка</span></p><p><br/></p></body></html>")
         self.setWindowTitle("Styling Game<3")
         self.radioButton.setText("Платье")
         self.label_2.setText("Тип:")
@@ -394,8 +395,8 @@ class MyWidget(QMainWindow):
         self.pushButton_8.clicked.connect(self.clear_last)
 
     def start_play(self):
-        w = Example()
-        w.show()
+        self.sub_window = Example()
+        self.sub_window.show()
 
     def clear_last(self):  # удаление последного элемента наряда(кнопка "удалить последнее")
         self.label_6.setText('')
@@ -427,7 +428,7 @@ class MyWidget(QMainWindow):
 
     def diagram(self):  # создание диаграммы
         m, e, p = 0, 0, 0
-        data = self.textBrowser.toPlainText().split('\n') # импорт вещей из текстогого браузера
+        data = self.textBrowser.toPlainText().split('\n')  # импорт вещей из текстогого браузера
         self.label_6.setText('')
         for i in data:  # считываем количество вещей определенных типов
             a = i.split(', ')
@@ -532,7 +533,7 @@ class MyWidget(QMainWindow):
         ch_btn_2 = str()
         result_2 = list()
         if isCheck != 0:  # есть выбранные стили
-            if isRadio != 0: # все выбранно
+            if isRadio != 0:  # все выбранно
                 if isCheck == 1:  # выбран 1 стиль
                     for btn in [self.checkBox, self.checkBox_2, self.checkBox_3]:
                         if btn.isChecked():
@@ -562,7 +563,7 @@ class MyWidget(QMainWindow):
                 else:
                     self.label_6.setText('По запросу ничего не найдено')
             else:  # выбранны только стили
-                if isCheck == 1: # 1 стиль
+                if isCheck == 1:  # 1 стиль
                     for btn in [self.checkBox, self.checkBox_2, self.checkBox_3]:
                         if btn.isChecked():
                             ch_btn = btn.text()
@@ -587,7 +588,8 @@ class MyWidget(QMainWindow):
                         self.tableWidget.setItem(i, j, QtWidgets.QTableWidgetItem(str(val)))
         else:  # есть выбранные стили
             if isRadio != 0:  # выбран только тип
-                result = cur.execute("SELECT * FROM Clothes WHERE type=?", [self.buttonGroup.checkedButton().text()]).fetchall()
+                result = cur.execute("SELECT * FROM Clothes WHERE type=?",
+                                     [self.buttonGroup.checkedButton().text()]).fetchall()
                 self.tableWidget.setRowCount(len(result))
                 self.tableWidget.setColumnCount(len(result[0]))
                 for i, elem in enumerate(result):
@@ -595,8 +597,6 @@ class MyWidget(QMainWindow):
                         self.tableWidget.setItem(i, j, QtWidgets.QTableWidgetItem(str(val)))
             else:  # ничего не выбрано
                 pass
-
-
 
 
 if __name__ == '__main__':
