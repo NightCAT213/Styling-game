@@ -1,4 +1,3 @@
-
 import sqlite3
 import sys
 
@@ -54,12 +53,14 @@ def play(player="pers.png"):
                     sys.exit()
             text = font.render("Проигрыш!", True, (255, 50, 50))
             text2 = font2.render("Чтобы начать заново, нажмите пробел.", True, (255, 50, 50))
+            text3 = font2.render(f"Ваш лучший счет: {int(max_score)}", True, (255, 50, 50))
             sc.blit(text, (320, 300))
             sc.blit(text2, (100, 400))
+            sc.blit(text3, (250, 450))
             pygame.display.flip()
             keys = pygame.key.get_pressed()
             if keys[pygame.K_SPACE]:
-                print("nu i huyi")
+                print("bad")
                 li = li2
                 try:
                     x, y = li[1][0], li[1][1] - 100
@@ -216,7 +217,7 @@ class Example(QWidget):
         self.pushButton.clicked.connect(self.getfiles)
         self.pushButton_2.clicked.connect(self.translate)
         self.counter = 0
-        self.file = 0
+        self.file = 'images_game2/doll.png'
 
     def getfiles(self):
         self.textBrowser.setText('')
