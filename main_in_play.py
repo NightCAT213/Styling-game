@@ -1,9 +1,11 @@
 import sqlite3
 import sys
 
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QFileDialog
 from PyQt5.QtChart import QChart, QPieSeries, QPieSlice, QChartView
 from PyQt5 import QtCore, QtGui, QtWidgets
+
+import main
 
 
 class MyWidget(QMainWindow):
@@ -24,6 +26,15 @@ class MyWidget(QMainWindow):
         font.setPointSize(16)
         font.setBold(True)
         font.setWeight(75)
+
+        # <Pygame>
+        btn_play = QPushButton(self)
+        btn_play.setText("Играть")
+        btn_play.move(1300, 700)
+        btn_play.resize(200, 50)
+        btn_play.clicked.connect(self.start_play)
+        # </Pygame>
+
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.radioButton = QtWidgets.QRadioButton(self.centralwidget)
@@ -280,6 +291,13 @@ class MyWidget(QMainWindow):
         self.pushButton_7.clicked.connect(self.show_pic)
         self.pushButton_8.clicked.connect(self.clear_last)
 
+    def start_play(self):
+        fd = QFileDialog.getOpenFileName(self, 'Выберите костюм', '/suit')[0]
+        f = open(fd, 'r')
+        with f:
+            data = f.read()
+            main.play()
+
     def clear_last(self):  # удаление последного элемента наряда(кнопка "удалить последнее")
         self.label_6.setText('')
         cursor = self.textBrowser.textCursor()
@@ -297,14 +315,14 @@ class MyWidget(QMainWindow):
         if ok_pressed:
             f = open(f'{file}.txt', 'w')
             f.write('Наряд:\n')
-            f.write('\n')
             f.write(self.textBrowser.toPlainText())
             f.close()
 
     def add_clothe(self):  # добавление вещи в наряд
         row = self.tableWidget.currentIndex().row()
         data = [self.tableWidget.item(row, column).text()
-                for column in range(self.tableWidget.columnCount() - 1)]
+                for column in range(self.tableWidget.columnCount())]
+        data[-1] = data[-1][12:-4]
         self.textBrowser.append(str('- ' + ', '.join(data) + '\n'))
         self.label_6.setText('')
 
