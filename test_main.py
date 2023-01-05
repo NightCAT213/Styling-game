@@ -8,6 +8,8 @@ from PyQt5.QtWidgets import QApplication, QWidget, QFileDialog
 from PIL import Image
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+import main
+
 
 class Example(QWidget):
     def __init__(self):
@@ -107,7 +109,7 @@ class Example(QWidget):
             self.textBrowser.setText('Файл не удовлетворяет форматам игры')
 
     def translate(self):
-        pass
+        main.play(self.file)
 
 
 class MyWidget(QMainWindow):
