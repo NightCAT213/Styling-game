@@ -37,7 +37,7 @@ def play(player="pers.png"):
     pygame.mixer.music.load('music.mp3')
     font = pygame.font.Font(None, 60)
     font2 = pygame.font.Font(None, 50)
-    # pygame.mixer.music.play(-1)
+    pygame.mixer.music.play(-1)
 
     while True:
         text_lives = font.render(f"Жизни: {now_help}", True, (0, 255, 0))
