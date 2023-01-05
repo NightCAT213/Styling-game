@@ -1,4 +1,4 @@
-def play():
+def play(player="pers.png"):
     import pygame
     import sys
     from random import randint as rd
@@ -18,7 +18,7 @@ def play():
 
     bg = pygame.image.load("Phon.PNG")
     platform = pygame.image.load("platform.png")
-    pers = pygame.image.load("pers.png")
+    pers = pygame.image.load(player)
     butterfly = pygame.image.load("butterfly.png")
     scale = pygame.transform.scale(platform, (150, 30))
     scale2 = pygame.transform.scale(pers, (80, 120))
