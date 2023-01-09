@@ -293,6 +293,12 @@ class MyWidget(QMainWindow):
         btn_play.setText("Играть")
         btn_play.move(1300, 700)
         btn_play.resize(200, 50)
+        font = QtGui.QFont()
+        font.setFamily("Yu Gothic UI")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        btn_play.setFont(font)
         btn_play.clicked.connect(self.start_play)
         # </Pygame>
 
