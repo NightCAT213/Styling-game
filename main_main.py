@@ -37,7 +37,7 @@ def play(player="pers.png"):
     pygame.mixer.music.load('music.mp3')
     font = pygame.font.Font(None, 60)
     font2 = pygame.font.Font(None, 50)
-    pygame.mixer.music.play(-1)
+    #pygame.mixer.music.play(-1)
 
     while True:
         text_lives = font.render(f"Жизни: {now_help}", True, (0, 255, 0))
@@ -86,10 +86,8 @@ def play(player="pers.png"):
                 sc.blit(scale, [i[0], i[1]])
             else:
                 sc.blit(scale, [i[0], i[1]])
-                try:
+                if i[2] == 1:
                     sc.blit(scale3, [i[0] + 30, i[1] - 90])
-                except:
-                    None
         sc.blit(scale2, [x, y])
         pygame.display.flip()
         keys = pygame.key.get_pressed()
@@ -149,12 +147,11 @@ def play(player="pers.png"):
                         jc = 10
                         helper += 1
                         if len(i) == 3 and i[2] == 1:
+                            print("scale3")
                             now_help += 1
                             i[2] = 0
-                            try:
-                                del scale3
-                            except:
-                                None
+                            del scale3
+                            scale3 = pygame.transform.scale(butterfly, (100, 100))
             else:
                 print(x, y)
                 print(jc)
