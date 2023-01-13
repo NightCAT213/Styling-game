@@ -63,6 +63,7 @@ def play(player="pers.png"):
             keys = pygame.key.get_pressed()
             if keys[pygame.K_q]:  # выход из игры
                 pygame.display.quit()
+                pygame.mixer.music.pause()
                 break
             if keys[pygame.K_SPACE]:  # проверка нажатия пробела, если нажат, то возобновляем игру
                 li = li2
