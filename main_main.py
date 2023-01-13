@@ -12,7 +12,7 @@ def play(player="pers.png"):
     import sys
     from random import randint as rd
 
-    x = 400
+    x = 400  # задаем переменным значения
     y = 585
     jump = False
     jc = 10
@@ -25,7 +25,7 @@ def play(player="pers.png"):
     max_score = 0
     pygame.init()
 
-    bg = pygame.image.load("Phon.PNG")
+    bg = pygame.image.load("Phon.PNG")  # подгружаем картинки
     platform = pygame.image.load("platform.png")
     pers = pygame.image.load(player)
     butterfly = pygame.image.load("butterfly.png")
@@ -37,30 +37,29 @@ def play(player="pers.png"):
     pygame.mixer.music.load('music.mp3')
     font = pygame.font.Font(None, 60)
     font2 = pygame.font.Font(None, 50)
-    #pygame.mixer.music.play(-1)
+    pygame.mixer.music.play(-1)  # музыка
 
-    while True:
-        text_lives = font.render(f"Жизни: {now_help}", True, (0, 255, 0))
+    while True:  # начинаем игру
+        text_lives = font.render(f"Жизни: {now_help}", True, (0, 255, 0))  # текст
         sc.blit(text_lives, (0, 0))
         text_score = font.render(f"Счет: {int(score)}", True, (255, 255, 0))
         sc.blit(text_score, (0, 40))
         pygame.display.flip()
-        if y > 750 and now_help == 0:
+        if y > 750 and now_help == 0:  # если проигрыш
             if score > max_score:
                 max_score = score
             for i in pygame.event.get():
                 if i.type == pygame.QUIT:
                     sys.exit()
-            text = font.render("Проигрыш!", True, (255, 50, 50))
+            text = font.render("Проигрыш!", True, (255, 50, 50))  # текст в конце игры
             text2 = font2.render("Чтобы начать заново, нажмите пробел.", True, (255, 50, 50))
-            text3 = font2.render(f"Ваш лучший счет: {int(max_score)}", True, (255, 50, 50))
+            text3 = font2.render(f"Ваше лучшее время: {int(max_score)}", True, (255, 50, 50))
             sc.blit(text, (320, 300))
             sc.blit(text2, (100, 400))
             sc.blit(text3, (250, 450))
             pygame.display.flip()
             keys = pygame.key.get_pressed()
-            if keys[pygame.K_SPACE]:
-                print("bad")
+            if keys[pygame.K_SPACE]:  # проверка нажатия пробела, если нажат, то возобновляем игру
                 li = li2
                 try:
                     x, y = li[1][0], li[1][1] - 100
@@ -74,8 +73,6 @@ def play(player="pers.png"):
         elif y > 750:
             now_help -= 1
             x, y = li[-1][0], li[-1][1]
-            print("coords")
-            print(x, y)
             pr = 0.5
         for i in pygame.event.get():
             if i.type == pygame.QUIT:
@@ -90,7 +87,7 @@ def play(player="pers.png"):
                     sc.blit(scale3, [i[0] + 30, i[1] - 90])
         sc.blit(scale2, [x, y])
         pygame.display.flip()
-        keys = pygame.key.get_pressed()
+        keys = pygame.key.get_pressed()  # подключение кнопок
         if keys[pygame.K_LEFT] and x >= 0 and not jump:
             x -= 3
         elif keys[pygame.K_LEFT] and x >= 0:
@@ -101,14 +98,11 @@ def play(player="pers.png"):
             x += 6
         kl1 = 0
         kl2 = 0
-        for i in li:
+        for i in li:  # проверка 
             if i[0] - 50 <= x <= i[0] + 110 and i[1] - 110 < y < i[1] - 70:
                 kl1 = 1
                 break
             elif not jump and i[1] - 110 < y < i[1] - 70 and not (i[0] - 50 <= x <= i[0] + 110):
-                print("yeah")
-                print(x, y)
-                print(i)
                 kl2 += 1
             if i[1] > 800:
                 li.remove(i)
@@ -126,9 +120,9 @@ def play(player="pers.png"):
         if not kl1 and kl2:
             jump = True
             jc = 0
-        if keys[pygame.K_UP] and y >= 50:
+        if keys[pygame.K_UP] and y >= 50:  # кнопка, отвечающая за прыжок
             jump = True
-        if jump is True:
+        if jump is True:  # прыжок
             if y > 750:
                 jump = False
                 y = 749
@@ -142,19 +136,15 @@ def play(player="pers.png"):
                 m = 110
                 for i in li:
                     if i[0] - 50 <= x <= i[0] + 110 and i[1] - 110 < y < i[1] - 70:
-                        print(x, y)
                         jump = False
                         jc = 10
                         helper += 1
                         if len(i) == 3 and i[2] == 1:
-                            print("scale3")
                             now_help += 1
                             i[2] = 0
                             del scale3
                             scale3 = pygame.transform.scale(butterfly, (100, 100))
             else:
-                print(x, y)
-                print(jc)
                 jump = False
                 jc = 10
         for i in range(len(li)):
@@ -170,7 +160,7 @@ class Example(QWidget):
         super().__init__()
         self.initUI()
 
-    def initUI(self): # создание окна
+    def initUI(self):  # создание окна
         self.setObjectName("Form")
         self.resize(527, 572)
         self.setStyleSheet("background-color: rgb(255, 197, 233);")
