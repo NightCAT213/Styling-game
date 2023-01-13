@@ -170,7 +170,7 @@ class Example(QWidget):
         super().__init__()
         self.initUI()
 
-    def initUI(self):
+    def initUI(self): # создание окна
         self.setObjectName("Form")
         self.resize(527, 572)
         self.setStyleSheet("background-color: rgb(255, 197, 233);")
@@ -210,27 +210,27 @@ class Example(QWidget):
         self.setWindowTitle("Просмотр персонажа")
         self.pushButton.setText("Загрузить наряд")
         self.pushButton_2.setText("Продолжить")
-
+        # подключение кнопок
         self.pushButton.clicked.connect(self.getfiles)
         self.pushButton_2.clicked.connect(self.translate)
         self.counter = 0
         self.file = 'images_game2/doll.png'
 
-    def getfiles(self):
+    def getfiles(self): # получение текстового файла
         self.textBrowser.setText('')
         fname = QFileDialog.getOpenFileName(self, 'Open file',
-                                            'c:\\', "Text files (*.txt)")
+                                            'c:\\', "Text files (*.txt)") # диалоговое окно для выбора файла
         f = open(str(fname[0]), 'r')
         if f.read(6) == 'Наряд:':
             f.seek(6)
-            lst = f.readlines()
+            lst = f.readlines() # чтение
             data = []
             for i in lst:
                 if i != '\n':
                     data.append(i.split(', '))
             pl, v, n, ob = 0, 0, 0, 0
             if len(data) <= 3:
-                for i in data:
+                for i in data: # проверка состава
                     if i[0] == '- Верх':
                         v += 1
                     elif i[0] == '- Низ':
@@ -242,10 +242,10 @@ class Example(QWidget):
                     else:
                         self.textBrowser.setText('Файл не удовлетворяет форматам игры')
                         break
-                if ((len(data) == 3 and v == 1 and n == 1 and ob == 1)
+                if ((len(data) == 3 and v == 1 and n == 1 and ob == 1) # создание наряда
                         or (len(data) == 2 and ((pl == 1 and ob == 1) or (v == 1 or n == 1 or ob == 1)))
                         or (len(data) == 1)):
-                    self.counter += 1
+                    self.counter += 1 
                     img = Image.open('images_game2/doll.png')
                     for i in data:
                         fn = Image.open(str('images_game2/' + i[-1][:-1] + '.png'))
@@ -253,7 +253,7 @@ class Example(QWidget):
                     img.save(str(fname[0])[:-4] + '_' + str(self.counter) + ".png")
                     im = QtGui.QPixmap(str(fname[0])[:-4] + '_' + str(self.counter) + ".png")
                     im = im.scaled(271, 521)
-                    self.label.setPixmap(im)
+                    self.label.setPixmap(im) # отображение
                     self.file = str(fname[0])[:-4] + '_' + str(self.counter) + ".png"
                 else:
                     self.textBrowser.setText('Файл не удовлетворяет форматам игры')
@@ -262,8 +262,8 @@ class Example(QWidget):
         else:
             self.textBrowser.setText('Файл не удовлетворяет форматам игры')
 
-    def translate(self):
-        play(self.file)
+    def translate(self): # кнопка продолжить
+        play(self.file) # передача катртинки в следуещее окно
 
 
 class MyWidget(QMainWindow):
