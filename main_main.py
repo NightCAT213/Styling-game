@@ -42,7 +42,7 @@ def play(player="pers.png"):
     while True:  # начинаем игру
         text_lives = font.render(f"Жизни: {now_help}", True, (0, 255, 0))  # текст
         sc.blit(text_lives, (0, 0))
-        text_score = font.render(f"Время: {int(score)}", True, (255, 255, 0))
+        text_score = font.render(f"Счет: {int(score)}", True, (255, 255, 0))
         sc.blit(text_score, (0, 40))
         pygame.display.flip()
         if y > 750 and now_help == 0:  # если проигрыш
@@ -53,12 +53,17 @@ def play(player="pers.png"):
                     sys.exit()
             text = font.render("Проигрыш!", True, (255, 50, 50))  # текст в конце игры
             text2 = font2.render("Чтобы начать заново, нажмите пробел.", True, (255, 50, 50))
+            text4 = font2.render("Чтобы выйти, нажмите q.", True, (255, 50, 50))
             text3 = font2.render(f"Ваше лучшее время: {int(max_score)}", True, (255, 50, 50))
             sc.blit(text, (320, 300))
             sc.blit(text2, (100, 400))
             sc.blit(text3, (250, 450))
+            sc.blit(text4, (230, 500))
             pygame.display.flip()
             keys = pygame.key.get_pressed()
+            if keys[pygame.K_q]:  # выход из игры
+                pygame.display.quit()
+                break
             if keys[pygame.K_SPACE]:  # проверка нажатия пробела, если нажат, то возобновляем игру
                 li = li2
                 try:
@@ -98,7 +103,7 @@ def play(player="pers.png"):
             x += 6
         kl1 = 0
         kl2 = 0
-        for i in li:  # проверка 
+        for i in li:  # проверка
             if i[0] - 50 <= x <= i[0] + 110 and i[1] - 110 < y < i[1] - 70:
                 kl1 = 1
                 break
@@ -235,7 +240,7 @@ class Example(QWidget):
                 if ((len(data) == 3 and v == 1 and n == 1 and ob == 1) # создание наряда
                         or (len(data) == 2 and ((pl == 1 and ob == 1) or (v == 1 or n == 1 or ob == 1)))
                         or (len(data) == 1)):
-                    self.counter += 1 
+                    self.counter += 1
                     img = Image.open('images_game2/doll.png')
                     for i in data:
                         fn = Image.open(str('images_game2/' + i[-1][:-1] + '.png'))
