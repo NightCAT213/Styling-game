@@ -42,7 +42,7 @@ def play(player="pers.png"):
     while True:  # начинаем игру
         text_lives = font.render(f"Жизни: {now_help}", True, (0, 255, 0))  # текст
         sc.blit(text_lives, (0, 0))
-        text_score = font.render(f"Счет: {int(score)}", True, (255, 255, 0))
+        text_score = font.render(f"Время: {int(score)}", True, (255, 255, 0))
         sc.blit(text_score, (0, 40))
         pygame.display.flip()
         if y > 750 and now_help == 0:  # если проигрыш
