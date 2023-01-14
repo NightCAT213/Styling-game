@@ -581,8 +581,13 @@ class MyWidget(QMainWindow):
         data = [self.tableWidget.item(row, column).text()
                 for column in range(self.tableWidget.columnCount())]
         data[-1] = data[-1][12:-4]
-        self.textBrowser.append(str('- ' + ', '.join(data) + '\n'))
-        self.label_6.setText('')
+        if ((('Верх' in str(data) or 'Низ' in str(data) or 'Платье' in str(data)) and 'Платье' in self.textBrowser.toPlainText()) 
+                or (('Низ' in str(data) or 'Платье' in str(data)) and 'Низ' in self.textBrowser.toPlainText())
+                or (('Верх' in str(data) or 'Платье' in str(data)) and 'Верх' in self.textBrowser.toPlainText())):
+            self.label_6.setText('Невозможно сочетать данные вещи')
+        else:
+            self.textBrowser.append(str('- ' + ', '.join(data) + '\n'))
+            self.label_6.setText('')
 
     def diagram(self):  # создание диаграммы
         m, e, p = 0, 0, 0
