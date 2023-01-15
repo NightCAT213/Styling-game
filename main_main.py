@@ -1,4 +1,3 @@
-
 import sqlite3
 import sys
 
@@ -8,13 +7,166 @@ from PyQt5.QtWidgets import QApplication, QWidget, QFileDialog
 from PIL import Image
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+def play(player="pers.png"):
+    import pygame
+    import sys
+    from random import randint as rd
+
+    x = 400  # задаем переменным значения
+    y = 585
+    jump = False
+    jc = 10
+    li = [[400, 700], [600, 550], [400, 450], [400, 250], [600, 150], [400, 50]]
+    li2 = li[:]
+    pr = 0.5
+    helper = 49
+    now_help = 0
+    score = 0
+    max_score = 0
+    pygame.init()
+
+    bg = pygame.image.load("Phon.PNG")  # подгружаем картинки
+    platform = pygame.image.load("platform.png")
+    pers = pygame.image.load(player)
+    butterfly = pygame.image.load("butterfly.png")
+    scale = pygame.transform.scale(platform, (150, 30))
+    scale2 = pygame.transform.scale(pers, (80, 120))
+    scale3 = pygame.transform.scale(butterfly, (100, 100))
+    sc = pygame.display.set_mode((840, 840))
+    clock = pygame.time.Clock()
+    pygame.mixer.music.load('music.mp3')
+    font = pygame.font.Font(None, 60)
+    font2 = pygame.font.Font(None, 50)
+    pygame.mixer.music.play(-1)  # музыка
+
+    while True:  # начинаем игру
+        text_lives = font.render(f"Жизни: {now_help}", True, (0, 255, 0))  # текст
+        sc.blit(text_lives, (0, 0))
+        text_score = font.render(f"Счет: {int(score)}", True, (255, 255, 0))
+        sc.blit(text_score, (0, 40))
+        pygame.display.flip()
+        if y > 750 and now_help == 0:  # если проигрыш
+            if score > max_score:
+                max_score = score
+            for i in pygame.event.get():
+                if i.type == pygame.QUIT:
+                    sys.exit()
+            text = font.render("Проигрыш!", True, (255, 50, 50))  # текст в конце игры
+            text2 = font2.render("Чтобы начать заново, нажмите пробел.", True, (255, 50, 50))
+            text4 = font2.render("Чтобы выйти, нажмите q.", True, (255, 50, 50))
+            text3 = font2.render(f"Ваше лучшее время: {int(max_score)}", True, (255, 50, 50))
+            sc.blit(text, (320, 300))
+            sc.blit(text2, (100, 400))
+            sc.blit(text3, (250, 450))
+            sc.blit(text4, (230, 500))
+            pygame.display.flip()
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_q]:  # выход из игры
+                pygame.display.quit()
+                pygame.mixer.music.pause()
+                break
+            if keys[pygame.K_SPACE]:  # проверка нажатия пробела, если нажат, то возобновляем игру
+                li = li2
+                try:
+                    x, y = li[1][0], li[1][1] - 100
+                except:
+                    x, y = 400, 500
+                jump = False
+                jc = 10
+                pr = 0.5
+                score = 0
+            continue
+        elif y > 750:
+            now_help -= 1
+            x, y = li[-1][0], li[-1][1]
+            pr = 0.5
+        for i in pygame.event.get():
+            if i.type == pygame.QUIT:
+                sys.exit()
+        sc.blit(bg, [0, 0])
+        for i in li:
+            if len(i) == 2:
+                sc.blit(scale, [i[0], i[1]])
+            else:
+                sc.blit(scale, [i[0], i[1]])
+                if i[2] == 1:
+                    sc.blit(scale3, [i[0] + 30, i[1] - 90])
+        sc.blit(scale2, [x, y])
+        pygame.display.flip()
+        keys = pygame.key.get_pressed()  # подключение кнопок
+        if keys[pygame.K_LEFT] and x >= 0 and not jump:
+            x -= 3
+        elif keys[pygame.K_LEFT] and x >= 0:
+            x -= 6
+        elif keys[pygame.K_RIGHT] and x <= 760 and not jump:
+            x += 3
+        elif keys[pygame.K_RIGHT] and x <= 760:
+            x += 6
+        kl1 = 0
+        kl2 = 0
+        for i in li:  # проверка
+            if i[0] - 50 <= x <= i[0] + 110 and i[1] - 110 < y < i[1] - 70:
+                kl1 = 1
+                break
+            elif not jump and i[1] - 110 < y < i[1] - 70 and not (i[0] - 50 <= x <= i[0] + 110):
+                kl2 += 1
+            if i[1] > 800:
+                li.remove(i)
+                x1 = rd(int(li[len(li) - 1][0] - 170), int(li[len(li) - 1][0]) + 170)
+                y1 = int(li[len(li) - 1][1] - 170)
+                if x1 < 100:
+                    x1 = li[len(li) - 1][0] + 170
+                elif x1 > 750:
+                    x1 = li[len(li) - 1][0] - 170
+                if helper >= 50:
+                    li.append([x1, y1, 1])
+                    helper = 0
+                else:
+                    li.append([x1, y1])
+        if not kl1 and kl2:
+            jump = True
+            jc = 0
+        if keys[pygame.K_UP] and y >= 50:  # кнопка, отвечающая за прыжок
+            jump = True
+        if jump is True:  # прыжок
+            if y > 750:
+                jump = False
+                y = 749
+                jc = 10
+            elif jc >= -20:
+                if jc < 0:
+                    y += (jc ** 2) // 2
+                else:
+                    y -= (jc ** 2) // 2
+                jc -= 1
+                m = 110
+                for i in li:
+                    if i[0] - 50 <= x <= i[0] + 110 and i[1] - 110 < y < i[1] - 70:
+                        jump = False
+                        jc = 10
+                        helper += 1
+                        if len(i) == 3 and i[2] == 1:
+                            now_help += 1
+                            i[2] = 0
+                            del scale3
+                            scale3 = pygame.transform.scale(butterfly, (100, 100))
+            else:
+                jump = False
+                jc = 10
+        for i in range(len(li)):
+            li[i][1] += pr
+        y += pr
+        score += 0.02
+        pr += 0.001
+        clock.tick(60)
+
 
 class Example(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
 
-    def initUI(self):
+    def initUI(self):  # создание окна
         self.setObjectName("Form")
         self.resize(527, 572)
         self.setStyleSheet("background-color: rgb(255, 197, 233);")
@@ -54,27 +206,27 @@ class Example(QWidget):
         self.setWindowTitle("Просмотр персонажа")
         self.pushButton.setText("Загрузить наряд")
         self.pushButton_2.setText("Продолжить")
-
+        # подключение кнопок
         self.pushButton.clicked.connect(self.getfiles)
         self.pushButton_2.clicked.connect(self.translate)
         self.counter = 0
-        self.file = 0
+        self.file = 'images_game2/doll.png'
 
-    def getfiles(self):
+    def getfiles(self): # получение текстового файла
         self.textBrowser.setText('')
         fname = QFileDialog.getOpenFileName(self, 'Open file',
-                                            'c:\\', "Text files (*.txt)")
+                                            'c:\\', "Text files (*.txt)") # диалоговое окно для выбора файла
         f = open(str(fname[0]), 'r')
         if f.read(6) == 'Наряд:':
             f.seek(6)
-            lst = f.readlines()
+            lst = f.readlines() # чтение
             data = []
             for i in lst:
                 if i != '\n':
                     data.append(i.split(', '))
             pl, v, n, ob = 0, 0, 0, 0
             if len(data) <= 3:
-                for i in data:
+                for i in data: # проверка состава
                     if i[0] == '- Верх':
                         v += 1
                     elif i[0] == '- Низ':
@@ -86,7 +238,7 @@ class Example(QWidget):
                     else:
                         self.textBrowser.setText('Файл не удовлетворяет форматам игры')
                         break
-                if ((len(data) == 3 and v == 1 and n == 1 and ob == 1)
+                if ((len(data) == 3 and v == 1 and n == 1 and ob == 1) # создание наряда
                         or (len(data) == 2 and ((pl == 1 and ob == 1) or (v == 1 or n == 1 or ob == 1)))
                         or (len(data) == 1)):
                     self.counter += 1
@@ -97,7 +249,7 @@ class Example(QWidget):
                     img.save(str(fname[0])[:-4] + '_' + str(self.counter) + ".png")
                     im = QtGui.QPixmap(str(fname[0])[:-4] + '_' + str(self.counter) + ".png")
                     im = im.scaled(271, 521)
-                    self.label.setPixmap(im)
+                    self.label.setPixmap(im) # отображение
                     self.file = str(fname[0])[:-4] + '_' + str(self.counter) + ".png"
                 else:
                     self.textBrowser.setText('Файл не удовлетворяет форматам игры')
@@ -106,8 +258,8 @@ class Example(QWidget):
         else:
             self.textBrowser.setText('Файл не удовлетворяет форматам игры')
 
-    def translate(self):
-        pass
+    def translate(self): # кнопка продолжить
+        play(self.file) # передача катртинки в следуещее окно
 
 
 class MyWidget(QMainWindow):
@@ -134,6 +286,12 @@ class MyWidget(QMainWindow):
         btn_play.setText("Играть")
         btn_play.move(1300, 700)
         btn_play.resize(200, 50)
+        font = QtGui.QFont()
+        font.setFamily("Yu Gothic UI")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        btn_play.setFont(font)
         btn_play.clicked.connect(self.start_play)
         # </Pygame>
 
@@ -423,8 +581,13 @@ class MyWidget(QMainWindow):
         data = [self.tableWidget.item(row, column).text()
                 for column in range(self.tableWidget.columnCount())]
         data[-1] = data[-1][12:-4]
-        self.textBrowser.append(str('- ' + ', '.join(data) + '\n'))
-        self.label_6.setText('')
+        if ((('Верх' in str(data) or 'Низ' in str(data) or 'Платье' in str(data)) and 'Платье' in self.textBrowser.toPlainText()) 
+                or (('Низ' in str(data) or 'Платье' in str(data)) and 'Низ' in self.textBrowser.toPlainText())
+                or (('Верх' in str(data) or 'Платье' in str(data)) and 'Верх' in self.textBrowser.toPlainText())):
+            self.label_6.setText('Невозможно сочетать данные вещи')
+        else:
+            self.textBrowser.append(str('- ' + ', '.join(data) + '\n'))
+            self.label_6.setText('')
 
     def diagram(self):  # создание диаграммы
         m, e, p = 0, 0, 0
